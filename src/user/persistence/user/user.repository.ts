@@ -2,6 +2,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { User } from "./user.entity";
 import Promise, { BadRequestException, Injectable } from "@nestjs/common";
+import { SignUpDto } from "src/auth/dto/signUp.dto";
 
 @Injectable()
 export class userRepository {
@@ -17,5 +18,20 @@ export class userRepository {
     someuser.created_at = new Date();
     someuser.updated_at = new Date();
     return await someuser;
+  }
+
+  async getaUser(email: string): Promise<User> {
+    const user = await this.userRepository.findOne({ where: { email: email } });
+    return user;
+  }
+
+  async createUser(
+    fname: string,
+    lname: string,
+    email: string,
+    password: string,
+  ): Promise<User> {
+    const user = this.userRepository.create({ fname, lname, email, password });
+    return await this.userRepository.save(user);
   }
 }

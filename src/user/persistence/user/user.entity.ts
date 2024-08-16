@@ -16,6 +16,12 @@ export class User {
   email: string;
 
   @Column({ nullable: false })
+  fname: string;
+
+  @Column({ nullable: false })
+  lname: string;
+
+  @Column({ nullable: false })
   password: string;
 
   @CreateDateColumn({
