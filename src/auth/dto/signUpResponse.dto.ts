@@ -12,4 +12,6 @@ export class SignUpResponseDto {
 
   @Expose()
   updated_at: Date;
+
+  url: string;
 }
