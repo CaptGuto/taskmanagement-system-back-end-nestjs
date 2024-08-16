@@ -3,7 +3,7 @@ import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { typeOrmConfig } from "src/config/typeorm.config";
+import { typeOrmConfig } from "../config/typeorm.config";
 import { AuthModule } from "./auth/auth.module";
 import { UserModule } from "./user/user.module";
 
