@@ -7,24 +7,14 @@ import { UserService } from "src/user/usecases/user.service";
 import { SignUpDto } from "./dto/signUp.dto";
 import { User } from "src/user/persistence/user/user.entity";
 import { SignInDto } from "./dto/signIn.dto";
-import { randomBytes, scrypt as _scrypt } from "crypto";
-import { promisify } from "util";
-
-const scrypt = promisify(_scrypt);
+import { PasswordAuth } from "./password.auth";
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly userService: UserService) {}
-
-  async signUp(info: SignUpDto) {
-    const user = await this.userService.getaUser(info.email);
-    if (user) {
-      throw new BadRequestException("User already exists");
-    }
-
-    info.password = await this.generateHashPassword(info.password);
-    return this.userService.createUser(info);
-  }
+  constructor(
+    private readonly userService: UserService,
+    private readonly passwordAuth: PasswordAuth,
+  ) {}
 
   async signIn(info: SignInDto) {
     const user = await this.userService.getaUser(info.email);
@@ -32,26 +22,18 @@ export class AuthService {
       throw new BadRequestException("User does not exist");
     }
     const [salt, storedHash] = user.password.split(".");
-    const recived_password = await this.generateHashPassword(
+    const recived_password = await this.passwordAuth.generateHashPassword(
       info.password,
       salt,
     );
 
-    if (user.password === recived_password) {
-      return user;
-    } else {
-      return new UnauthorizedException("Wrong password");
+    if (user.password !== recived_password) {
+      throw new UnauthorizedException("wrong password");
     }
+
+    return user;
   }
 
   // The error was that I was returning a string instead of a promise
   // I was also using the wrong type for the scrypt function
-  async generateHashPassword(
-    password: string,
-    salt: string = randomBytes(8).toString("hex"),
-  ): Promise<string> {
-    const hash = (await scrypt(password, salt, 32)) as Buffer;
-
-    return salt + "." + hash.toString("hex");
-  }
 }

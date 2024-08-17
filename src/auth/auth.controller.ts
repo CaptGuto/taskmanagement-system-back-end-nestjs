@@ -25,10 +25,10 @@ export class AuthController {
     return this.authService.signIn(body);
   }
 
-  @Post("/signup")
-  signup(@Body() body: SignUpDto) {
-    const { fname, lname, email, password } = body;
+  // @Post("/signup")
+  // signup(@Body() body: SignUpDto) {
+  //   const { fname, lname, email, password } = body;
 
-    return this.authService.signUp(body);
-  }
+  //   return this.authService.signUp(body);
+  // }
 }
