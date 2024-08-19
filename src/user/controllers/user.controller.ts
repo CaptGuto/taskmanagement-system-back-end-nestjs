@@ -4,19 +4,18 @@ import {
   Controller,
   Get,
   Post,
+  UseGuards,
 } from "@nestjs/common";
 import { UserService } from "../usecases/user.service";
 import { SignUpDto } from "src/auth/dto/signUp.dto";
 import { PasswordAuth } from "src/auth/password.auth";
 import { Serialize } from "src/interceptor/serialize.interceptor";
 import { SignUpResponseDto } from "src/auth/dto/signUpResponse.dto";
+import { AuthGuard } from "src/auth/auth.guard";
 
 @Controller("user")
 export class UserController {
-  constructor(
-    private readonly userService: UserService,
-    private readonly passwordAuth: PasswordAuth,
-  ) {}
+  constructor(private readonly userService: UserService) {}
 
   @Get()
   getAll() {
@@ -26,12 +25,12 @@ export class UserController {
   @Serialize(SignUpResponseDto)
   @Post("signup")
   async signUp(@Body() info: SignUpDto) {
-    const user = await this.userService.getaUser(info.email);
-    if (user) {
-      throw new BadRequestException("User already exists");
-    }
+    return this.userService.signup(info);
+  }
 
-    info.password = await this.passwordAuth.generateHashPassword(info.password);
-    return this.userService.createUser(info);
+  @UseGuards(AuthGuard)
+  @Get("me")
+  getMyInformation() {
+    return "your Information is visible";
   }
 }

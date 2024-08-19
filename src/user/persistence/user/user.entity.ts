@@ -36,4 +36,6 @@ export class User {
     name: "updated_at",
   })
   updated_at: Date;
+
+  access_token: string;
 }
