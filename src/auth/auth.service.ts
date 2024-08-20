@@ -20,7 +20,7 @@ export class AuthService {
   ) {}
 
   async validateUser(info: SignInDto) {
-    const user = await this.userService.getaUser(info.email);
+    const user = await this.userService.getUserByEmail(info.email);
     if (!user) {
       throw new BadRequestException("User does not exist");
     }
@@ -43,7 +43,7 @@ export class AuthService {
     }
 
     const tokenPyload = {
-      sub: user.id,
+      id: user.id,
       email: user.email,
     };
 

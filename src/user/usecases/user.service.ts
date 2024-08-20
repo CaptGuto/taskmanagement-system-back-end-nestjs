@@ -15,12 +15,11 @@ export class UserService {
     return await this.userRepository.getAll();
   }
 
-  async getaUser(email: string): Promise<User> {
-    const user = await this.userRepository.getaUserWithEmail(email);
-    return user;
+  async getUserByEmail(email: string): Promise<User> {
+    return await this.userRepository.getaUserWithEmail(email);
   }
 
-  async getUser(id: number): Promise<User> {
+  async getUserById(id: number): Promise<User> {
     return await this.userRepository.getaUserWithId(id);
   }
   async createUser(user: SignUpDto): Promise<User> {
@@ -36,7 +35,7 @@ export class UserService {
   }
 
   async signup(info: SignUpDto) {
-    const user = await this.getaUser(info.email);
+    const user = await this.getUserByEmail(info.email);
     if (user) {
       throw new BadRequestException("User already exists");
     }

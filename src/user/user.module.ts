@@ -5,11 +5,17 @@ import { User } from "./persistence/user/user.entity";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { userRepository } from "./persistence/user/user.repository";
 import { PasswordAuth } from "src/auth/password.auth";
+import { CurrentUserInterceptor } from "./utility/interceptors/current-user.interceptor";
 
 @Module({
   imports: [TypeOrmModule.forFeature([User])],
   exports: [UserService, userRepository],
-  providers: [UserService, userRepository, PasswordAuth],
+  providers: [
+    UserService,
+    userRepository,
+    PasswordAuth,
+    CurrentUserInterceptor,
+  ],
   controllers: [UserController],
 })
 export class UserModule {}

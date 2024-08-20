@@ -5,6 +5,7 @@ import {
   Get,
   Post,
   UseGuards,
+  UseInterceptors,
 } from "@nestjs/common";
 import { UserService } from "../usecases/user.service";
 import { SignUpDto } from "src/auth/dto/signUp.dto";
@@ -14,6 +15,8 @@ import { SignUpResponseDto } from "src/auth/dto/signUpResponse.dto";
 import { AuthGuard } from "src/auth/auth.guard";
 import { CurrentUser } from "../utility/decorators/current-user.decorator";
 import { User } from "../persistence/user/user.entity";
+import { CurrentUserInterceptor } from "../utility/interceptors/current-user.interceptor";
+import { UserResponeseDto } from "../usecases/dto/user-response.dto";
 
 @Controller("user")
 export class UserController {
@@ -37,7 +40,9 @@ export class UserController {
   }
 
   @UseGuards(AuthGuard)
+  @UseInterceptors(CurrentUserInterceptor)
   @Get("/getuserinfo")
+  @Serialize(UserResponeseDto)
   getUserInfo(@CurrentUser() user: User) {
     return user;
   }
