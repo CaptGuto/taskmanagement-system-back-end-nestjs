@@ -16,10 +16,13 @@ export class UserService {
   }
 
   async getaUser(email: string): Promise<User> {
-    const user = await this.userRepository.getaUser(email);
+    const user = await this.userRepository.getaUserWithEmail(email);
     return user;
   }
 
+  async getUser(id: number): Promise<User> {
+    return await this.userRepository.getaUserWithId(id);
+  }
   async createUser(user: SignUpDto): Promise<User> {
     const { fname, lname, email, password } = user;
     const returnedUser = await this.userRepository.createUser(

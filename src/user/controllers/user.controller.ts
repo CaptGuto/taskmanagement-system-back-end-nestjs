@@ -12,6 +12,8 @@ import { PasswordAuth } from "src/auth/password.auth";
 import { Serialize } from "src/interceptor/serialize.interceptor";
 import { SignUpResponseDto } from "src/auth/dto/signUpResponse.dto";
 import { AuthGuard } from "src/auth/auth.guard";
+import { CurrentUser } from "../utility/decorators/current-user.decorator";
+import { User } from "../persistence/user/user.entity";
 
 @Controller("user")
 export class UserController {
@@ -32,5 +34,11 @@ export class UserController {
   @Get("me")
   getMyInformation() {
     return "your Information is visible";
+  }
+
+  @UseGuards(AuthGuard)
+  @Get("/getuserinfo")
+  getUserInfo(@CurrentUser() user: User) {
+    return user;
   }
 }

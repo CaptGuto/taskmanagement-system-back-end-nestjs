@@ -23,7 +23,7 @@ export class AuthGuard implements CanActivate {
         secret: JWT_SECREATE.JWT_SECREATE,
       });
 
-      request["user"] = payload;
+      request.user = payload;
     } catch {
       throw new UnauthorizedException();
     }
@@ -32,7 +32,6 @@ export class AuthGuard implements CanActivate {
   }
 
   private extractTokenFromHeader(request: Request): string | undefined {
-
     const authorization = request.headers["authorization"];
     const [type, token] = authorization?.split(" ") ?? [undefined, undefined];
     return type === "Bearer" ? token : undefined;

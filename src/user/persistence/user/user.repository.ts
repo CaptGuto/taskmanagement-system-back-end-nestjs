@@ -20,8 +20,12 @@ export class userRepository {
     return await someuser;
   }
 
-  async getaUser(email: string): Promise<User> {
+  async getaUserWithEmail(email: string): Promise<User> {
     const user = await this.userRepository.findOne({ where: { email: email } });
+    return user;
+  }
+  async getaUserWithId(id: number): Promise<User> {
+    const user = await this.userRepository.findOne({ where: { id: id } });
     return user;
   }
 
