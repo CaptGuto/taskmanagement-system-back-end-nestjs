@@ -3,6 +3,7 @@ import {
   Body,
   Controller,
   Get,
+  Patch,
   Post,
   UseGuards,
   UseInterceptors,
@@ -13,11 +14,14 @@ import { PasswordAuth } from "src/auth/password.auth";
 import { Serialize } from "src/interceptor/serialize.interceptor";
 import { SignUpResponseDto } from "src/auth/dto/signUpResponse.dto";
 import { AuthGuard } from "src/auth/auth.guard";
-import { CurrentUser } from "../utility/decorators/current-user.decorator";
+import {
+  CurrentUser,
+  CurrentUserId,
+} from "../utility/decorators/current-user.decorator";
 import { User } from "../persistence/user/user.entity";
 import { CurrentUserInterceptor } from "../utility/interceptors/current-user.interceptor";
 import { UserResponeseDto } from "../usecases/dto/user-response.dto";
-
+import { UpdateUserProfileDto } from "../usecases/dto/update-user-profile.dto";
 @Controller("user")
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -45,5 +49,11 @@ export class UserController {
   @Serialize(UserResponeseDto)
   getUserInfo(@CurrentUser() user: User) {
     return user;
+  }
+
+  @UseGuards(AuthGuard)
+  @Patch("update-user-info")
+  updateUser(@Body() info: UpdateUserProfileDto, @CurrentUserId() id: number) {
+    return this.userService.updateUser(info, id);
   }
 }

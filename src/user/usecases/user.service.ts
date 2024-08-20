@@ -3,6 +3,7 @@ import { userRepository } from "../persistence/user/user.repository";
 import { User } from "../persistence/user/user.entity";
 import { SignUpDto } from "src/auth/dto/signUp.dto";
 import { PasswordAuth } from "src/auth/password.auth";
+import { UpdateUserProfileDto } from "./dto/update-user-profile.dto";
 
 @Injectable()
 export class UserService {
@@ -42,5 +43,9 @@ export class UserService {
 
     info.password = await this.passwordAuth.generateHashPassword(info.password);
     return this.createUser(info);
+  }
+
+  async updateUser(info: Partial<UpdateUserProfileDto>, userId: number) {
+    return this.userRepository.updateUser(info, userId);
   }
 }

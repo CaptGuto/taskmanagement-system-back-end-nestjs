@@ -1,8 +1,13 @@
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { User } from "./user.entity";
-import Promise, { BadRequestException, Injectable } from "@nestjs/common";
+import Promise, {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from "@nestjs/common";
 import { SignUpDto } from "src/auth/dto/signUp.dto";
+import { UpdateUserProfileDto } from "src/user/usecases/dto/update-user-profile.dto";
 
 @Injectable()
 export class userRepository {
@@ -37,5 +42,20 @@ export class userRepository {
   ): Promise<User> {
     const user = this.userRepository.create({ fname, lname, email, password });
     return await this.userRepository.save(user);
+  }
+
+  async updateUser(
+    info: Partial<UpdateUserProfileDto>,
+    userId: number,
+  ): Promise<User> {
+    // Todo: Implement User update
+    const user = await this.getaUserWithId(userId);
+    if (!user) {
+      throw new NotFoundException(`User with id ${userId} not found`);
+    }
+
+    Object.assign(user, info);
+
+    return this.userRepository.save(user);
   }
 }
