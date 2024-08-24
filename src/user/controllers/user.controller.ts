@@ -31,7 +31,7 @@ export class UserController {
     return this.userService.getAll();
   }
 
-  @Serialize(SignUpResponseDto)
+  // @Serialize(SignUpResponseDto)
   @Post("signup")
   async signUp(@Body() info: SignUpDto) {
     return this.userService.signup(info);

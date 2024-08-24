@@ -10,6 +10,6 @@ export const CurrentUser = createParamDecorator(
 export const CurrentUserId = createParamDecorator(
   (data: never, context: ExecutionContext) => {
     const request = context.switchToHttp().getRequest();
-    return request.user.id;
+    return request.currentUser.id;
   },
 );

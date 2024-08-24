@@ -1,4 +1,5 @@
 import { Expose } from "class-transformer";
+import { Task } from "../../../task/persistence/task.entity";
 import {
   Column,
   Entity,
@@ -6,6 +7,8 @@ import {
   Timestamp,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
+  OneToOne,
 } from "typeorm";
 
 @Entity()
@@ -37,5 +40,10 @@ export class User {
   })
   updated_at: Date;
 
-  access_token: string;
+  access_token: string; //not part of entity
+
+  // @OneToOne(() => Task, (task) => task.created_by_user)
+  // task: Task[]
+  @OneToMany(() => Task, (task) => task.user)
+  task: Task[];
 }
