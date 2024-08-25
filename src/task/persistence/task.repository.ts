@@ -6,6 +6,7 @@ import { TaskPriority } from "../utility/task-priority.enum";
 import { TaskStatus } from "../utility/status.enum";
 import { User } from "src/user/persistence/user/user.entity";
 import { UserService } from "src/user/usecases/user.service";
+import { CreateTaskDto } from "../usecase/dto/create-task.dto";
 
 @Injectable()
 export class TaskRepository {
@@ -34,6 +35,10 @@ export class TaskRepository {
     return await this.taskRepository.save(task);
   }
 
+  async getATaskWithId(taskId: number): Promise<Task> {
+    return await this.taskRepository.findOne({ where: { task_id: taskId } });
+  }
+
   async getAllTasks(user: User) {
     const tasks = await this.taskRepository.findBy(user.task);
     return tasks;
@@ -57,11 +62,23 @@ export class TaskRepository {
     const users = await this.userService.findUsersWithId(assignedUserId);
 
     if (users.length !== assignedUserId.length) {
-      throw new NotFoundException(`One or more user not found`); //todo: need to get which user is not found and throw an error for it but assign the remaing found users
+      throw new NotFoundException(`One or more user not found`);
+      //todo: need to get which user is not found and throw an error for it but assign the remaing found users
     }
 
     task.users_assigned_to_task = users;
 
     return await this.taskRepository.save(task);
+  }
+
+  async updateTask(taskId, info: Partial<CreateTaskDto>): Promise<Task> {
+    const user = await this.getATaskWithId(taskId);
+    if (!user) {
+      throw new NotFoundException(`User with id ${taskId} not found`);
+    }
+
+    Object.assign(user, info);
+
+    return this.taskRepository.save(user);
   }
 }

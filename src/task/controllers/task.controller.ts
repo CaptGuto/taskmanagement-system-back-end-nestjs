@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Param,
+  Patch,
   Post,
   Query,
   UseGuards,
@@ -46,5 +47,13 @@ export class TaskController {
       taskId["taskId"],
       assigneUserIds["userIds"],
     );
+  }
+
+  @Patch("/:taskId/update")
+  async updateTask(
+    @Param() taskId: number,
+    @Body() body: Partial<CreateTaskDto>,
+  ) {
+    return this.taskService.updateTask(taskId["taskId"], body);
   }
 }

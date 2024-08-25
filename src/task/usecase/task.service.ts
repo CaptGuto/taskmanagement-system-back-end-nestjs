@@ -20,6 +20,10 @@ export class TaskService {
     );
   }
 
+  async updateTask(taskId, info: Partial<CreateTaskDto>) {
+    return await this.taskRepository.updateTask(taskId, info);
+  }
+
   async getAllTasks(user: User) {
     return await this.taskRepository.getAllTasks(user);
   }
