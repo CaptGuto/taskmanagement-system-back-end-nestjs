@@ -49,11 +49,14 @@ export class TaskController {
     );
   }
 
+  //Implement a guard to check if the user is the creator/admin of the task
+  @UseGuards(AuthGuard)
   @Patch("/:taskId/update")
   async updateTask(
     @Param() taskId: number,
     @Body() body: Partial<CreateTaskDto>,
   ) {
     return this.taskService.updateTask(taskId["taskId"], body);
+
   }
 }
