@@ -3,7 +3,6 @@ import { AuthService } from "./auth.service";
 import { AuthController } from "./auth.controller";
 import { UserService } from "src/user/usecases/user.service";
 import { UserModule } from "src/user/user.module";
-import { userRepository } from "src/user/persistence/user/user.repository";
 import { PasswordAuth } from "./password.auth";
 import { JwtModule } from "@nestjs/jwt";
 import { JWT_SECREATE } from "config/jwt.screate";
@@ -14,7 +13,7 @@ import { JWT_SECREATE } from "config/jwt.screate";
     JwtModule.register({
       global: true,
       secret: JWT_SECREATE.JWT_SECREATE,
-      signOptions: { expiresIn: "300s" },
+      signOptions: { expiresIn: "1200s" },
     }),
   ],
   providers: [AuthService, UserService, PasswordAuth],

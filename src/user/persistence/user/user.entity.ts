@@ -9,6 +9,7 @@ import {
   UpdateDateColumn,
   OneToMany,
   OneToOne,
+  ManyToMany,
 } from "typeorm";
 
 @Entity()
@@ -42,8 +43,10 @@ export class User {
 
   access_token: string; //not part of entity
 
-  // @OneToOne(() => Task, (task) => task.created_by_user)
-  // task: Task[]
   @OneToMany(() => Task, (task) => task.user)
   task: Task[];
+
+  //The relation to associate all the tasks assigned to a user
+  @ManyToMany(() => Task, (task) => task.users_assigned_to_task)
+  tasks_assigned_to_user: Task[];
 }

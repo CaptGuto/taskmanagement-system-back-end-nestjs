@@ -2,7 +2,6 @@ import { Injectable } from "@nestjs/common";
 import { TaskRepository } from "../persistence/task.repository";
 import { CreateTaskDto } from "./dto/create-task.dto";
 import { User } from "src/user/persistence/user/user.entity";
-import { userRepository } from "src/user/persistence/user/user.repository";
 
 @Injectable()
 export class TaskService {
@@ -21,7 +20,11 @@ export class TaskService {
     );
   }
 
-  getAllTasks(user: User) {
-    return this.taskRepository.getAllTasks(user);
+  async getAllTasks(user: User) {
+    return await this.taskRepository.getAllTasks(user);
+  }
+
+  async assignUserToTask(taskId: number, assignedUserId: number[]) {
+    return await this.taskRepository.assignUsetToTask(taskId, assignedUserId);
   }
 }

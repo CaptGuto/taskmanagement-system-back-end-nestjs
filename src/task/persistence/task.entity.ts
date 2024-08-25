@@ -3,6 +3,7 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
+  JoinTable,
   ManyToMany,
   ManyToOne,
   OneToMany,
@@ -40,23 +41,11 @@ export class Task {
   @UpdateDateColumn()
   updated_at: Date;
 
-  // @Column({name: "created_by"})
-  // createdBy : number
-
-  // @Column({name: 'project_id', nullable: true})
-  // projectId : any //Later update this to a project entity
-
-  // @Column({name: 'assigned_to', nullable: true})
-  // assigned_to: User[] //Create a realationship here m:m
-
-  // @OneToOne((type) => User)
-  // @JoinColumn({ name: 'created_by'})
-  // created_by_user: User
-
   @ManyToOne(() => User, (user) => user.task)
   user: User;
 
-  // @ManyToMany(() => User, (user) => user.task)
-  // @JoinColumn({ name: 'assigned_to' })
-  // user: User //Create a realationship here 1:m
+  //The relation to associate all the users assigned to a task
+  @ManyToMany(() => User, (user) => user.tasks_assigned_to_user)
+  @JoinTable({ name: "users_assigned_to_task" })
+  users_assigned_to_task: User[];
 }

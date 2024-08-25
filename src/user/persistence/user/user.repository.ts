@@ -1,5 +1,5 @@
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { In, Repository } from "typeorm";
 import { User } from "./user.entity";
 import Promise, {
   BadRequestException,
@@ -10,7 +10,7 @@ import { SignUpDto } from "src/auth/dto/signUp.dto";
 import { UpdateUserProfileDto } from "src/user/usecases/dto/update-user-profile.dto";
 
 @Injectable()
-export class userRepository {
+export class UserRepository {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
@@ -25,6 +25,11 @@ export class userRepository {
     return await someuser;
   }
 
+  async findUsersWithId(userIds: number[]): Promise<User[]> {
+    return await this.userRepository.find({
+      where: { id: In(userIds) },
+    });
+  }
   async getaUserWithEmail(email: string): Promise<User> {
     const user = await this.userRepository.findOne({ where: { email: email } });
     return user;
