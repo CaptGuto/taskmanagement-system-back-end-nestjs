@@ -7,6 +7,7 @@ import { typeOrmConfig } from "../config/typeorm.config";
 import { AuthModule } from "./auth/auth.module";
 import { UserModule } from "./user/user.module";
 import { TaskModule } from "./task/task.module";
+import { TeamModule } from "./team/team.module";
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { TaskModule } from "./task/task.module";
     AuthModule,
     UserModule,
     TaskModule,
+    TeamModule,
   ],
   controllers: [AppController],
   providers: [AppService],
