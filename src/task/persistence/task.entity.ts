@@ -1,6 +1,7 @@
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   JoinColumn,
   JoinTable,
@@ -40,6 +41,12 @@ export class Task {
 
   @UpdateDateColumn()
   updated_at: Date;
+
+  @DeleteDateColumn({ nullable: true, name: "deleted_at" })
+  deletedAt?: Date;
+
+  @Column({ nullable: true, name: "deleted_by" })
+  deletedBy?: number;
 
   @ManyToOne(() => User, (user) => user.task)
   user: User;

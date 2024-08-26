@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -18,6 +19,7 @@ import { User } from "src/user/persistence/user/user.entity";
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
 
+  //Clean out the response data what is returned.
   @UseGuards(AuthGuard)
   @Post("create")
   async createTask(
@@ -35,6 +37,7 @@ export class TaskController {
 
   //todo: this needs a guard to check if the user is the creator/admin of the task
   //and should it not allow an assignUser to task with an empty
+  //Clean out the response data what is returned.
   @UseGuards(AuthGuard)
   @Post("/:taskId/assign-user")
   async assignUserToTask(
@@ -50,13 +53,20 @@ export class TaskController {
   }
 
   //Implement a guard to check if the user is the creator/admin of the task
+  //Clean out the response data what is returned.
   @UseGuards(AuthGuard)
   @Patch("/:taskId/update")
   async updateTask(
-    @Param() taskId: number,
+    @Param("taskId") taskId: number,
     @Body() body: Partial<CreateTaskDto>,
   ) {
-    return this.taskService.updateTask(taskId["taskId"], body);
+    return this.taskService.updateTask(taskId, body);
+  }
 
+  // Delete Task
+  @UseGuards(AuthGuard)
+  @Delete("/:taskId/archive")
+  async deleteTask(@CurrentUser() user: User, @Param("taskId") taskId: number) {
+    return this.taskService.deleteTask(taskId, user);
   }
 }

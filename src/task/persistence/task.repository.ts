@@ -81,4 +81,17 @@ export class TaskRepository {
 
     return this.taskRepository.save(user);
   }
+
+  async archiveTask(taskId: number, archivedBy: User) {
+    const task = await this.getATaskWithId(taskId);
+
+    if (!task) {
+      throw new NotFoundException(`Task with id ${taskId} not found`);
+    }
+
+    task.deletedBy = archivedBy.id;
+    task.deletedAt = new Date();
+
+    return this.taskRepository.save(task);
+  }
 }
