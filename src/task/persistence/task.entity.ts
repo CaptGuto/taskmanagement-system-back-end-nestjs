@@ -54,7 +54,8 @@ export class Task {
   @Column({ nullable: true, name: "deleted_by" })
   deletedBy?: number;
 
-  @ManyToOne(() => User, (user) => user.task)
+  @ManyToOne(() => User, (user) => user.tasks_of_user)
+  @JoinColumn()
   user: User;
 
   //The relation to associate all the users assigned to a task

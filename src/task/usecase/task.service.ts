@@ -4,6 +4,11 @@ import { CreateTaskDto } from "./dto/create-task.dto";
 import { User } from "src/user/persistence/user/user.entity";
 import { Task } from "../persistence/task.entity";
 
+// Tell the getTaskWithId function to return the user as well if set to true
+type GetTaskByIdProperties = {
+  getUser: boolean;
+};
+
 @Injectable()
 export class TaskService {
   constructor(private readonly taskRepository: TaskRepository) {}
@@ -21,6 +26,15 @@ export class TaskService {
     );
   }
 
+  async getTaskWithId(
+    taskId: number,
+    filter: GetTaskByIdProperties = { getUser: false },
+  ): Promise<Task> {
+    if (filter.getUser) {
+      return await this.taskRepository.getAtaskbyIdWithUser(taskId);
+    }
+    return await this.taskRepository.getATaskWithId(taskId);
+  }
   async updateTask(taskId, info: Partial<CreateTaskDto>): Promise<Task> {
     return await this.taskRepository.updateTask(taskId, info);
   }

@@ -50,6 +50,6 @@ export class UserService {
   }
 
   async findUsersWithId(userIds: number[]): Promise<User[]> {
-    return await this.userRepository.findUsersWithId(userIds);
+    return await this.userRepository.findUsersWithIds(userIds);
   }
 }

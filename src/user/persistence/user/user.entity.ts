@@ -44,7 +44,7 @@ export class User {
   access_token: string; //not part of entity
 
   @OneToMany(() => Task, (task) => task.user)
-  task: Task[];
+  tasks_of_user: Task[];
 
   //The relation to associate all the tasks assigned to a user
   @ManyToMany(() => Task, (task) => task.users_assigned_to_task)

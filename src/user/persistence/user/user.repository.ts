@@ -25,7 +25,7 @@ export class UserRepository {
     return await someuser;
   }
 
-  async findUsersWithId(userIds: number[]): Promise<User[]> {
+  async findUsersWithIds(userIds: number[]): Promise<User[]> {
     return await this.userRepository.find({
       where: { id: In(userIds) },
     });

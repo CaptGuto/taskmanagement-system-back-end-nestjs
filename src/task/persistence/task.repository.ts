@@ -39,8 +39,16 @@ export class TaskRepository {
     return await this.taskRepository.findOne({ where: { task_id: taskId } });
   }
 
+  async getAtaskbyIdWithUser(taskId: number): Promise<Task> {
+    return await this.taskRepository.findOne({
+      where: { task_id: taskId },
+      relations: {
+        user: true,
+      },
+    });
+  }
   async getAllTasks(user: User) {
-    const tasks = await this.taskRepository.findBy(user.task);
+    const tasks = await this.taskRepository.findBy(user.tasks_of_user);
     return tasks;
   }
 

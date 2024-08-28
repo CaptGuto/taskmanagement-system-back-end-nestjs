@@ -13,7 +13,7 @@ import { SignUpDto } from "src/auth/dto/signUp.dto";
 import { PasswordAuth } from "src/auth/password.auth";
 import { Serialize } from "src/interceptor/serialize.interceptor";
 import { SignUpResponseDto } from "src/auth/dto/signUpResponse.dto";
-import { AuthGuard } from "src/auth/auth.guard";
+import { AuthGuard } from "src/auth/Guards/auth.guard";
 import {
   CurrentUser,
   CurrentUserId,
