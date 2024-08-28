@@ -1,7 +1,9 @@
+import { User } from "src/user/persistence/user/user.entity";
 import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
@@ -14,11 +16,8 @@ export class Team {
   @Column({ name: "team_name" })
   teamName: string;
 
-  @Column({ name: "team_description" })
+  @Column({ name: "team_description", nullable: true })
   teamDescription: string;
-
-  @Column({ name: "team_leader" })
-  teamLeader: number; //later to be changed to a relationship with user
 
   @CreateDateColumn({
     type: "timestamptz",
@@ -31,4 +30,18 @@ export class Team {
     name: "updated_at",
   })
   updated_at: Date;
+
+  // Add created by as a column
+
+  // @Column({ name: "team_leader" })
+  // teamLeader: number; //later to be changed to a relationship with user
+
+  @ManyToOne(() => User, (user) => user.myTeams)
+  teamLeader: User;
+
+  // @ManyToMany(() => ...)
+  // team members: a many to many relationship with user
+
+  // @ManyToMany ...
+  // project assigned to team: a many to many relationship with project
 }

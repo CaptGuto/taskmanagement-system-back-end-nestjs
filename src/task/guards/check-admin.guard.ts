@@ -5,7 +5,6 @@ import {
   NotFoundException,
 } from "@nestjs/common";
 import { TaskService } from "../usecase/task.service";
-import { Observable } from "rxjs";
 import { UserService } from "src/user/usecases/user.service";
 
 @Injectable()
@@ -17,7 +16,6 @@ export class CheckAdminGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     const task_id = request.params.taskId;
-
 
     const task = await this.taskService.getTaskWithId(task_id, {
       getUser: true,

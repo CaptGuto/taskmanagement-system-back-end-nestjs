@@ -11,6 +11,7 @@ import {
   OneToOne,
   ManyToMany,
 } from "typeorm";
+import { Team } from "src/team/persistence/team.entity";
 
 @Entity()
 export class User {
@@ -49,4 +50,8 @@ export class User {
   //The relation to associate all the tasks assigned to a user
   @ManyToMany(() => Task, (task) => task.users_assigned_to_task)
   tasks_assigned_to_user: Task[];
+
+  // A relation to team defining team leader user of a team
+  @OneToMany(() => Team, (team) => team.teamLeader)
+  myTeams: Team[];
 }
