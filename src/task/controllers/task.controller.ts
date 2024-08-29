@@ -64,9 +64,19 @@ export class TaskController {
   }
 
   // Delete Task
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, CheckAdminGuard)
   @Delete("/:taskId/archive")
   async deleteTask(@CurrentUser() user: User, @Param("taskId") taskId: number) {
     return this.taskService.deleteTask(taskId, user);
   }
+
+  @Patch("/:taskId/complete")
+  async completeTask(@Param("taskId") taskId: number) {
+    return this.taskService.completeTask(taskId);
+  }
 }
+
+// TODO //
+// A way to put a task in to doing mode and show who is doing it and
+// the admin can see at what time they started doing it and if complete
+// they can see at what time they finished doing the task

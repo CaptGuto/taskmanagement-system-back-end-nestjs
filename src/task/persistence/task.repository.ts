@@ -35,30 +35,22 @@ export class TaskRepository {
     return await this.taskRepository.save(task);
   }
 
-  async getATaskWithId(taskId: number): Promise<Task> {
-    return await this.taskRepository.findOne({ where: { task_id: taskId } });
-  }
-
-  async getAtaskbyIdWithUser(taskId: number): Promise<Task> {
+  async getATaskWithId(
+    taskId: number,
+    relations: string[] = [],
+  ): Promise<Task> {
     return await this.taskRepository.findOne({
       where: { task_id: taskId },
-      relations: {
-        user: true,
-      },
+      relations,
     });
   }
+
   async getAllTasks(user: User) {
     const tasks = await this.taskRepository.findBy(user.tasks_of_user);
     return tasks;
   }
 
   async assignUsetToTask(taskId: number, assignedUserId: number[]) {
-    // return await this.taskRepository
-    //   .createQueryBuilder()
-    //   .relation(Task, "users_assigned_to_task")
-    //   .of(taskId)
-    //   .add(assignedUserId);
-    //I will use this when I get very good with QueryBuilders
     const task = await this.taskRepository.findOne({
       where: { task_id: taskId },
     });
@@ -80,14 +72,14 @@ export class TaskRepository {
   }
 
   async updateTask(taskId, info: Partial<CreateTaskDto>): Promise<Task> {
-    const user = await this.getATaskWithId(taskId);
-    if (!user) {
+    const task = await this.getATaskWithId(taskId);
+    if (!task) {
       throw new NotFoundException(`User with id ${taskId} not found`);
     }
 
-    Object.assign(user, info);
+    Object.assign(task, info);
 
-    return this.taskRepository.save(user);
+    return this.taskRepository.save(task);
   }
 
   async archiveTask(taskId: number, archivedBy: User) {
@@ -101,5 +93,17 @@ export class TaskRepository {
     task.deletedAt = new Date();
 
     return this.taskRepository.save(task);
+  }
+
+  async completeTask(taskid: number) {
+    const task = await this.getATaskWithId(taskid);
+
+    if (!task) {
+      throw new NotFoundException(`Task with id ${taskid} not found`);
+    }
+
+    task.status = TaskStatus.Done;
+
+    return await this.taskRepository.save(task);
   }
 }

@@ -28,12 +28,13 @@ export class TaskService {
 
   async getTaskWithId(
     taskId: number,
-    filter: GetTaskByIdProperties = { getUser: false },
+    // filter: GetTaskByIdProperties = { getUser: false },
+    relations: string[],
   ): Promise<Task> {
-    if (filter.getUser) {
-      return await this.taskRepository.getAtaskbyIdWithUser(taskId);
-    }
-    return await this.taskRepository.getATaskWithId(taskId);
+    // if (filter.getUser) {
+    //   return await this.taskRepository.getAtaskbyIdWithUser(taskId);
+    // }
+    return await this.taskRepository.getATaskWithId(taskId, relations);
   }
   async updateTask(taskId, info: Partial<CreateTaskDto>): Promise<Task> {
     return await this.taskRepository.updateTask(taskId, info);
@@ -49,5 +50,9 @@ export class TaskService {
 
   async deleteTask(taskId: number, user: User) {
     return this.taskRepository.archiveTask(taskId, user);
+  }
+
+  async completeTask(taskId: number) {
+    return this.taskRepository.completeTask(taskId);
   }
 }

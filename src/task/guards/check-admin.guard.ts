@@ -17,14 +17,12 @@ export class CheckAdminGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const task_id = request.params.taskId;
 
-    const task = await this.taskService.getTaskWithId(task_id, {
-      getUser: true,
-    });
+    const task = await this.taskService.getTaskWithId(task_id, ["user"]);
     const useri = await this.userService.getUserById(request.currentUser.id);
     if (!task) {
       throw new NotFoundException(`Task with id ${task_id} not found`);
     }
-    const isCreator = task.user.id === request.currentUser["id"];
+    const isCreator = task.createdBy === request.currentUser["id"];
     return isCreator;
   }
 }
