@@ -5,8 +5,8 @@ import {
   UnauthorizedException,
 } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
-import { JWT_SECREATE } from "config/jwt.screate";
-import { log } from "console";
+import "dotenv/config";
+
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(private jwtService: JwtService) {}
@@ -20,7 +20,7 @@ export class AuthGuard implements CanActivate {
     }
     try {
       const payload = await this.jwtService.verifyAsync(token, {
-        secret: JWT_SECREATE.JWT_SECREATE,
+        secret: process.env.JWT_SECREATE,
       });
 
       request.currentUser = payload;

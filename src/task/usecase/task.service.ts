@@ -47,7 +47,6 @@ export class TaskService {
       return await this.taskRepository.getAllTasks(user);
     }
 
-    // Assuming `filterBy` is an instance of FiltersForDate with a property `filterforDate`
     const filterByEnum = String(filterBy);
     const filters = {
       [FiltersForDateEnum.TODAY]: [
@@ -63,9 +62,6 @@ export class TaskService {
         moment().endOf("week").toDate(),
       ],
     };
-
-    // Ensure that the `filterByEnum` is a valid key in the `filters` object
-
     const [startDate, endDate] = filters[filterByEnum];
     const dateRange = { startDate, endDate };
     return await this.taskRepository.getAllTasks(user, dateRange);
