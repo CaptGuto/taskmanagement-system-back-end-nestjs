@@ -1,6 +1,6 @@
 import { Expose } from "class-transformer";
 import { IsDate, IsDateString, IsEnum, IsNotEmpty } from "class-validator";
-import { TaskStatus } from "src/task/utility/status.enum";
+import { TaskStatus } from "src/task/enums/status.enum";
 import { TaskPriority } from "src/task/utility/task-priority.enum";
 
 export class CreateTaskDto {

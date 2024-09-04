@@ -13,7 +13,7 @@ import { JWT_SECREATE } from "config/jwt.screate";
     JwtModule.register({
       global: true,
       secret: JWT_SECREATE.JWT_SECREATE,
-      signOptions: { expiresIn: "1200s" },
+      signOptions: { expiresIn: "1600s" },
     }),
   ],
   providers: [AuthService, UserService, PasswordAuth],

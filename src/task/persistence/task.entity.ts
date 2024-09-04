@@ -12,7 +12,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { TaskStatus } from "../utility/status.enum";
+import { TaskStatus } from "../enums/status.enum";
 import { TaskPriority } from "../utility/task-priority.enum";
 import { User } from "src/user/persistence/user/user.entity";
 
@@ -33,7 +33,7 @@ export class Task {
   @Column()
   priorty: TaskPriority;
 
-  @Column()
+  @Column({ type: "timestamptz" })
   due_date: Date;
 
   @CreateDateColumn({

@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -15,12 +16,13 @@ import { AuthGuard } from "../../auth/Guards/auth.guard";
 import { CurrentUser } from "src/user/utility/decorators/current-user.decorator";
 import { User } from "src/user/persistence/user/user.entity";
 import { CheckAdminGuard } from "../guards/check-admin.guard";
+import { FiltersForDateEnum } from "../enums/filters-for-date.enum";
 
 @Controller("task")
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
 
-  //Clean out the response data what is returned. Only put the user id not the whole user object
+  //TODO: Clean out the response data what is returned. Only put the user id not the whole user object
   @UseGuards(AuthGuard)
   @Post("create")
   async createTask(
@@ -30,26 +32,37 @@ export class TaskController {
     return this.taskService.createTask(body, current_user);
   }
 
+  //Get tasks of a user
   @UseGuards(AuthGuard)
   @Get("get-all")
-  async getAllTasks(@CurrentUser() user: User) {
-    return this.taskService.getAllTasks(user);
+  @Get("tasks")
+  async getAllTasks(
+    @CurrentUser() user: User,
+    @Query("filterDateBy") filterBy: FiltersForDateEnum,
+  ) {
+    if (
+      Object.values(FiltersForDateEnum).includes(
+        filterBy as FiltersForDateEnum,
+      ) ||
+      filterBy === undefined
+    ) {
+      return this.taskService.getAllTasks(user, filterBy);
+    } else {
+      throw new BadRequestException("Invalid filterBy value");
+    }
   }
 
-  //and should it not allow an assignUser to task with an empty
-  //Clean out the response data what is returned.
+  //TODO: and should it not allow an assignUser to task with an empty
+  //TODO: Clean out the response data what is returned.
   @UseGuards(AuthGuard)
   @Post("/:taskId/assign-user")
   async assignUserToTask(
-    @Param() taskId: number,
+    @Param("taskId") taskId: number,
     @Body() assigneUserIds: number[],
   ) {
     // todo here a check to see if the sent body is an array of userIds
 
-    return this.taskService.assignUserToTask(
-      taskId["taskId"],
-      assigneUserIds["userIds"],
-    );
+    return this.taskService.assignUserToTask(taskId, assigneUserIds["userIds"]);
   }
 
   //Todo: Implement a guard to check if the user is the creator/admin of the task

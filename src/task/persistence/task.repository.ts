@@ -3,10 +3,15 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Task } from "./task.entity";
 import { In, Repository } from "typeorm";
 import { TaskPriority } from "../utility/task-priority.enum";
-import { TaskStatus } from "../utility/status.enum";
+import { TaskStatus } from "../enums/status.enum";
 import { User } from "src/user/persistence/user/user.entity";
 import { UserService } from "src/user/usecases/user.service";
 import { CreateTaskDto } from "../usecase/dto/create-task.dto";
+
+export interface DateRange {
+  startDate?: Date;
+  endDate?: Date;
+}
 
 @Injectable()
 export class TaskRepository {
@@ -45,9 +50,20 @@ export class TaskRepository {
     });
   }
 
-  async getAllTasks(user: User) {
-    const tasks = await this.taskRepository.findBy(user.tasks_of_user);
-    return tasks;
+  async getAllTasks(user: User, dateRange: DateRange = {}) {
+    const { startDate, endDate } = dateRange;
+    if (!startDate && !endDate) {
+      return await this.taskRepository.findBy(user.tasks_of_user);
+    }
+    const result = await this.taskRepository
+      .createQueryBuilder("task")
+      .where("task.due_date BETWEEN :startDate AND :endDate", {
+        startDate,
+        endDate,
+      })
+      .getMany();
+
+    return result;
   }
 
   async assignUsetToTask(taskId: number, assignedUserId: number[]) {

@@ -1,8 +1,10 @@
-import { Injectable } from "@nestjs/common";
-import { TaskRepository } from "../persistence/task.repository";
+import { BadRequestException, Injectable } from "@nestjs/common";
+import { DateRange, TaskRepository } from "../persistence/task.repository";
 import { CreateTaskDto } from "./dto/create-task.dto";
 import { User } from "src/user/persistence/user/user.entity";
 import { Task } from "../persistence/task.entity";
+import { FiltersForDateEnum } from "../enums/filters-for-date.enum";
+import * as moment from "moment";
 
 // Tell the getTaskWithId function to return the user as well if set to true
 type GetTaskByIdProperties = {
@@ -40,14 +42,38 @@ export class TaskService {
     return await this.taskRepository.updateTask(taskId, info);
   }
 
-  async getAllTasks(user: User) {
-    return await this.taskRepository.getAllTasks(user);
+  async getAllTasks(user: User, filterBy?: FiltersForDateEnum) {
+    if (!filterBy) {
+      return await this.taskRepository.getAllTasks(user);
+    }
+
+    // Assuming `filterBy` is an instance of FiltersForDate with a property `filterforDate`
+    const filterByEnum = String(filterBy);
+    const filters = {
+      [FiltersForDateEnum.TODAY]: [
+        moment().startOf("day").toDate(),
+        moment().endOf("day").toDate(),
+      ],
+      [FiltersForDateEnum.TOMORROW]: [
+        moment().add(1, "days").startOf("day").toDate(),
+        moment().add(1, "days").endOf("day").toDate(),
+      ],
+      [FiltersForDateEnum.THIS_WEEK]: [
+        moment().startOf("week").toDate(),
+        moment().endOf("week").toDate(),
+      ],
+    };
+
+    // Ensure that the `filterByEnum` is a valid key in the `filters` object
+
+    const [startDate, endDate] = filters[filterByEnum];
+    const dateRange = { startDate, endDate };
+    return await this.taskRepository.getAllTasks(user, dateRange);
   }
 
   async assignUserToTask(taskId: number, assignedUserId: number[]) {
     return await this.taskRepository.assignUsetToTask(taskId, assignedUserId);
   }
-
   async deleteTask(taskId: number, user: User) {
     return this.taskRepository.archiveTask(taskId, user);
   }
