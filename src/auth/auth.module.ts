@@ -5,14 +5,15 @@ import { UserService } from "src/user/usecases/user.service";
 import { UserModule } from "src/user/user.module";
 import { PasswordAuth } from "./password.auth";
 import { JwtModule } from "@nestjs/jwt";
-import { JWT_SECREATE } from "config/jwt.screate";
+import * as dotenv from "dotenv";
 
+dotenv.config({ path: ".env" });
 @Module({
   imports: [
     UserModule,
     JwtModule.register({
       global: true,
-      secret: JWT_SECREATE.JWT_SECREATE,
+      secret: process.env.JWT_SECREATE,
       signOptions: { expiresIn: "1600s" },
     }),
   ],
