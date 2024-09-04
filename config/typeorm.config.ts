@@ -1,6 +1,5 @@
 import { TypeOrmModuleOptions } from "@nestjs/typeorm";
 import * as dotenv from "dotenv";
-import { DatabaseType } from "typeorm";
 
 dotenv.config({ path: ".env" });
 
