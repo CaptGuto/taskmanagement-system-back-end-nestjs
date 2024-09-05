@@ -18,8 +18,8 @@ export class UserRepository {
 
   async getAll(): Promise<User> {
     const someuser = new User();
-    someuser.email = "someemail";
-    someuser.password = "somepassword";
+    someuser.email = "Fake user Email";
+    someuser.password = "Fake user password";
     someuser.created_at = new Date();
     someuser.updated_at = new Date();
     return await someuser;
