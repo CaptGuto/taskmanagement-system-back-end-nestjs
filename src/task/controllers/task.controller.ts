@@ -18,7 +18,12 @@ import { User } from "src/user/persistence/user/user.entity";
 import { CheckAdminGuard } from "../guards/check-admin.guard";
 import { FiltersForDateEnum } from "../enums/filters-for-date.enum";
 import { Task } from "../persistence/task.entity";
-import { ApiBody, ApiCreatedResponse, ApiOkResponse } from "@nestjs/swagger";
+import {
+  ApiBody,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiQuery,
+} from "@nestjs/swagger";
 import { UpdateTaskDto } from "../usecase/dto/update-task.dto";
 import { CreateTaskResponseDto } from "../usecase/dto/create-task-response.dto";
 import { SerializeResponse } from "src/interceptor/serialize.interceptor";
@@ -45,10 +50,20 @@ export class TaskController {
   @UseGuards(AuthGuard)
   @Get("get-all")
   @Get("tasks")
+  @ApiQuery({
+    required: false,
+    name: "filterDateBy",
+    description:
+      "Filter tasks by date. If not provided, all tasks will be retrieved without filtering by date.",
+  })
+  @ApiOkResponse({
+    type: [CreateTaskResponseDto],
+    description: "Tasks retrieved successfully",
+  })
   async getAllTasks(
     @CurrentUser() user: User,
     @Query("filterDateBy") filterBy: FiltersForDateEnum,
-  ) {
+  ): Promise<CreateTaskResponseDto[]> {
     if (
       Object.values(FiltersForDateEnum).includes(
         filterBy as FiltersForDateEnum,

@@ -11,6 +11,7 @@ import { AuthService } from "./auth.service";
 import { SerializeResponse } from "src/interceptor/serialize.interceptor";
 import { SignUpResponseDto } from "./dto/signUpResponse.dto";
 import { SignInDto } from "./dto/signIn.dto";
+import { ApiOkResponse } from "@nestjs/swagger";
 
 @Controller("auth")
 @SerializeResponse(SignUpResponseDto)
@@ -18,14 +19,11 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post("/signin")
-  signin(@Body() body: SignInDto) {
+  @ApiOkResponse({
+    type: SignUpResponseDto,
+    description: "Sign in successful",
+  })
+  signin(@Body() body: SignInDto): Promise<SignUpResponseDto> {
     return this.authService.signIn(body);
   }
-
-  // @Post("/signup")
-  // signup(@Body() body: SignUpDto) {
-  //   const { fname, lname, email, password } = body;
-
-  //   return this.authService.signUp(body);
-  // }
 }
