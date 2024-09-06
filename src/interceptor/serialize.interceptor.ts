@@ -7,6 +7,7 @@ import {
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { plainToClass } from "class-transformer";
+import { SignUpResponseDto } from "src/auth/dto/signUpResponse.dto";
 
 export function Serialize<T>(dto: new () => T) {
   return UseInterceptors(new SerializeInterceptor(dto));
@@ -22,9 +23,13 @@ export class SerializeInterceptor<T> implements NestInterceptor {
         //   ...data,
         // }
 
-        return plainToClass(this.dto, data, {
+        const transformedData = plainToClass(this.dto, data, {
           excludeExtraneousValues: true,
         });
+
+        if (transformedData instanceof SignUpResponseDto) {
+        }
+        return transformedData;
       }),
     );
   }

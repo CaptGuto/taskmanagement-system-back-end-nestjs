@@ -17,6 +17,9 @@ import { CurrentUser } from "src/user/utility/decorators/current-user.decorator"
 import { User } from "src/user/persistence/user/user.entity";
 import { CheckAdminGuard } from "../guards/check-admin.guard";
 import { FiltersForDateEnum } from "../enums/filters-for-date.enum";
+import { Task } from "../persistence/task.entity";
+import { ApiBody, ApiCreatedResponse, ApiOkResponse } from "@nestjs/swagger";
+import { UpdateTaskDto } from "../usecase/dto/update-task.dto";
 
 @Controller("task")
 export class TaskController {
@@ -69,10 +72,15 @@ export class TaskController {
   //Clean out the response data what is returned.
   @UseGuards(AuthGuard, CheckAdminGuard)
   @Patch("/:taskId/update")
+  @ApiBody({
+    type: UpdateTaskDto,
+    description: "Partial porperties of Task, all fields are optional",
+  })
+  @ApiCreatedResponse({ type: () => Task })
   async updateTask(
     @Param("taskId") taskId: number,
-    @Body() body: Partial<CreateTaskDto>,
-  ) {
+    @Body() body: UpdateTaskDto,
+  ): Promise<Task> {
     return this.taskService.updateTask(taskId, body);
   }
 

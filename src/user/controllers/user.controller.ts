@@ -22,6 +22,7 @@ import { User } from "../persistence/user/user.entity";
 import { CurrentUserInterceptor } from "../utility/interceptors/current-user.interceptor";
 import { UserResponeseDto } from "../usecases/dto/user-response.dto";
 import { UpdateUserProfileDto } from "../usecases/dto/update-user-profile.dto";
+import { ApiCreatedResponse, ApiOkResponse } from "@nestjs/swagger";
 @Controller("user")
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -31,9 +32,10 @@ export class UserController {
     return this.userService.getAll();
   }
 
-  // @Serialize(SignUpResponseDto)
+  @Serialize(SignUpResponseDto)
   @Post("signup")
-  async signUp(@Body() info: SignUpDto) {
+  @ApiCreatedResponse({ type: SignUpResponseDto, status: 200 })
+  async signUp(@Body() info: SignUpDto): Promise<SignUpResponseDto> {
     return this.userService.signup(info);
   }
 

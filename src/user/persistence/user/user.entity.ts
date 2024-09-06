@@ -12,6 +12,7 @@ import {
   ManyToMany,
 } from "typeorm";
 import { Team } from "src/team/persistence/team.entity";
+import { ApiProperty } from "@nestjs/swagger";
 
 @Entity()
 export class User {
@@ -44,10 +45,12 @@ export class User {
 
   access_token: string; //not part of entity
 
+  @ApiProperty({ type: () => [Task] })
   @OneToMany(() => Task, (task) => task.user)
   tasks_of_user: Task[];
 
   //The relation to associate all the tasks assigned to a user
+  @ApiProperty({ type: () => [Task] })
   @ManyToMany(() => Task, (task) => task.users_assigned_to_task)
   tasks_assigned_to_user: Task[];
 
