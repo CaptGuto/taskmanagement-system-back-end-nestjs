@@ -9,7 +9,7 @@ import { map } from "rxjs/operators";
 import { plainToClass } from "class-transformer";
 import { SignUpResponseDto } from "src/auth/dto/signUpResponse.dto";
 
-export function Serialize<T>(dto: new () => T) {
+export function SerializeResponse<T>(dto: new () => T) {
   return UseInterceptors(new SerializeInterceptor(dto));
 }
 

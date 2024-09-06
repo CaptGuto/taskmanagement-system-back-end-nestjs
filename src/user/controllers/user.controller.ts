@@ -10,8 +10,7 @@ import {
 } from "@nestjs/common";
 import { UserService } from "../usecases/user.service";
 import { SignUpDto } from "src/auth/dto/signUp.dto";
-import { PasswordAuth } from "src/auth/password.auth";
-import { Serialize } from "src/interceptor/serialize.interceptor";
+import { SerializeResponse } from "src/interceptor/serialize.interceptor";
 import { SignUpResponseDto } from "src/auth/dto/signUpResponse.dto";
 import { AuthGuard } from "src/auth/Guards/auth.guard";
 import {
@@ -32,7 +31,7 @@ export class UserController {
     return this.userService.getAll();
   }
 
-  @Serialize(SignUpResponseDto)
+  @SerializeResponse(SignUpResponseDto)
   @Post("signup")
   @ApiCreatedResponse({ type: SignUpResponseDto, status: 200 })
   async signUp(@Body() info: SignUpDto): Promise<SignUpResponseDto> {
@@ -48,7 +47,7 @@ export class UserController {
   @UseGuards(AuthGuard)
   @UseInterceptors(CurrentUserInterceptor)
   @Get("/getuserinfo")
-  @Serialize(UserResponeseDto)
+  @SerializeResponse(UserResponeseDto)
   getUserInfo(@CurrentUser() user: User) {
     return user;
   }

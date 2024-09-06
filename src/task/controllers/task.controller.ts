@@ -20,18 +20,24 @@ import { FiltersForDateEnum } from "../enums/filters-for-date.enum";
 import { Task } from "../persistence/task.entity";
 import { ApiBody, ApiCreatedResponse, ApiOkResponse } from "@nestjs/swagger";
 import { UpdateTaskDto } from "../usecase/dto/update-task.dto";
+import { CreateTaskResponseDto } from "../usecase/dto/create-task-response.dto";
+import { SerializeResponse } from "src/interceptor/serialize.interceptor";
 
 @Controller("task")
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
 
-  //TODO: Clean out the response data what is returned. Only put the user id not the whole user object
   @UseGuards(AuthGuard)
+  @SerializeResponse(CreateTaskResponseDto)
   @Post("create")
+  @ApiCreatedResponse({
+    type: CreateTaskResponseDto,
+    description: "Task created successfully",
+  })
   async createTask(
     @Body() body: CreateTaskDto,
     @CurrentUser() current_user: User,
-  ) {
+  ): Promise<CreateTaskResponseDto> {
     return this.taskService.createTask(body, current_user);
   }
 

@@ -8,15 +8,12 @@ import {
 } from "@nestjs/common";
 import { SignUpDto } from "./dto/signUp.dto";
 import { AuthService } from "./auth.service";
-import {
-  Serialize,
-  SerializeInterceptor,
-} from "src/interceptor/serialize.interceptor";
+import { SerializeResponse } from "src/interceptor/serialize.interceptor";
 import { SignUpResponseDto } from "./dto/signUpResponse.dto";
 import { SignInDto } from "./dto/signIn.dto";
 
 @Controller("auth")
-@Serialize(SignUpResponseDto)
+@SerializeResponse(SignUpResponseDto)
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
