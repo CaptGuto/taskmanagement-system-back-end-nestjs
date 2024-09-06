@@ -6,6 +6,7 @@ import { TaskPriority } from "src/task/utility/task-priority.enum";
 
 export class CreateTaskResponseDto {
   @ApiProperty()
+  @Expose()
   task_id: number;
 
   @ApiProperty()
