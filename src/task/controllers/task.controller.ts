@@ -49,8 +49,7 @@ export class TaskController {
 
   //Get tasks of a user
   @UseGuards(AuthGuard)
-  @Get("get-all")
-  @Get("tasks")
+  @Get("get-all-tasks")
   @ApiQuery({
     required: false,
     name: "filterDateBy",
