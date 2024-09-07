@@ -78,9 +78,9 @@ export class TaskController {
   }
 
   //TODO: and should it not allow an assignUser to task with an empty
-  //TODO: Clean out the response data what is returned.
   @UseGuards(AuthGuard)
-  @Post("/:taskId/assign-user")
+  @SerializeResponse(AssignUserToTaskResponseDto)
+  @Post("/:taskId/assign-user") //POST REQUEST
   @ApiBody({
     type: () => [Number],
     description: "Array of userIds to assign to the task",
@@ -88,7 +88,6 @@ export class TaskController {
       users: { value: [45, 89, 34] },
     },
   })
-  @SerializeResponse(AssignUserToTaskResponseDto)
   @ApiOkResponse({
     type: AssignUserToTaskResponseDto,
     description: "Task assigned successfully",
