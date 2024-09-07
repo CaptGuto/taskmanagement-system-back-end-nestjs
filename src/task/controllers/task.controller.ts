@@ -27,6 +27,7 @@ import {
 import { UpdateTaskDto } from "../usecase/dto/update-task.dto";
 import { CreateTaskResponseDto } from "../usecase/dto/create-task-response.dto";
 import { SerializeResponse } from "src/interceptor/serialize.interceptor";
+import { AssignUserToTaskResponseDto } from "../usecase/dto/assign-user-to-task-response.dto";
 
 @Controller("task")
 export class TaskController {
@@ -80,10 +81,22 @@ export class TaskController {
   //TODO: Clean out the response data what is returned.
   @UseGuards(AuthGuard)
   @Post("/:taskId/assign-user")
+  @ApiBody({
+    type: () => [Number],
+    description: "Array of userIds to assign to the task",
+    examples: {
+      users: { value: [45, 89, 34] },
+    },
+  })
+  @SerializeResponse(AssignUserToTaskResponseDto)
+  @ApiOkResponse({
+    type: AssignUserToTaskResponseDto,
+    description: "Task assigned successfully",
+  })
   async assignUserToTask(
     @Param("taskId") taskId: number,
     @Body() assigneUserIds: number[],
-  ) {
+  ): Promise<AssignUserToTaskResponseDto> {
     // todo here a check to see if the sent body is an array of userIds
 
     return this.taskService.assignUserToTask(taskId, assigneUserIds["userIds"]);

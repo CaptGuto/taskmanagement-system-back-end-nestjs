@@ -68,7 +68,23 @@ export class TaskService {
   }
 
   async assignUserToTask(taskId: number, assignedUserId: number[]) {
-    return await this.taskRepository.assignUsetToTask(taskId, assignedUserId);
+    const returnedValue = await this.taskRepository.assignUsetToTask(
+      taskId,
+      assignedUserId,
+    );
+
+    if (!returnedValue) {
+      throw new BadRequestException("Task assignment failed");
+    }
+
+    const updatedTask = returnedValue;
+
+    return {
+      ...updatedTask,
+      users_assigned_to_task: updatedTask.users_assigned_to_task.map(
+        (user) => user.id,
+      ),
+    };
   }
   async deleteTask(taskId: number, user: User) {
     return this.taskRepository.archiveTask(taskId, user);
