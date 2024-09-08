@@ -2,6 +2,7 @@ import { User } from "src/user/persistence/user/user.entity";
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   JoinColumn,
   JoinTable,
@@ -37,6 +38,12 @@ export class Team {
 
   @Column({ name: "created_by" })
   createdBy: number;
+
+  @DeleteDateColumn({ nullable: true, name: "deleted_at" })
+  deletedAt?: Date;
+
+  @Column({ nullable: true, name: "deleted_by" })
+  deletedBy?: number;
 
   @ManyToOne(() => User, (user) => user.myTeams)
   @JoinColumn({ name: "created_by" })

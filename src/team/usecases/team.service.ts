@@ -21,4 +21,8 @@ export class TeamService {
   async updateTeam(info: Partial<CreateTeamDto>, teamId: number) {
     return await this.teamRepoistory.updateTeam(info, teamId);
   }
+
+  async deleteTeam(teamId: number, user: User) {
+    return await this.teamRepoistory.archiveTeam(teamId, user.id);
+  }
 }

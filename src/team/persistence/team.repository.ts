@@ -45,4 +45,17 @@ export class TeamRepository {
     Object.assign(team, info);
     return await this.teamRepository.save(team);
   }
+
+  async archiveTeam(teamId: number, archiverId: number) {
+    const team = await this.getATeamWithId(teamId);
+
+    if (!team) {
+      throw new NotFoundException(`Team with id ${teamId} not found`);
+    }
+
+    team.deletedAt = new Date();
+    team.deletedBy = archiverId;
+
+    return await this.teamRepository.save(team);
+  }
 }

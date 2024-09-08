@@ -61,11 +61,9 @@ export class Task {
   @Column({ name: "created_by" })
   createdBy: number;
 
-  @ApiProperty()
   @DeleteDateColumn({ nullable: true, name: "deleted_at" })
   deletedAt?: Date;
 
-  @ApiProperty()
   @Column({ nullable: true, name: "deleted_by" })
   deletedBy?: number;
 
