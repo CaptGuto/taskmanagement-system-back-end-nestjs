@@ -55,6 +55,6 @@ export class User {
   tasks_assigned_to_user: Task[];
 
   // A relation to team defining team leader user of a team
-  @OneToMany(() => Team, (team) => team.teamLeader)
+  @OneToMany(() => Team, (team) => team.createdBy)
   myTeams: Team[];
 }

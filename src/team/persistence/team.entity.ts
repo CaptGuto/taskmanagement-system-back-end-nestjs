@@ -3,7 +3,9 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
@@ -31,13 +33,18 @@ export class Team {
   })
   updated_at: Date;
 
-  // Add created by as a column
+  @Column({ name: "created_by" })
+  createdBy: number;
+
+  @ManyToOne(() => User, (user) => user.myTeams)
+  @JoinColumn({ name: "created_by" })
+  user: User;
 
   // @Column({ name: "team_leader" })
   // teamLeader: number; //later to be changed to a relationship with user
 
-  @ManyToOne(() => User, (user) => user.myTeams)
-  teamLeader: User;
+  // @ManyToOne(() => User, (user) => user.myTeams)
+  // teamLeader: User;
 
   // @ManyToMany(() => ...)
   // team members: a many to many relationship with user

@@ -14,8 +14,9 @@ export class TeamRepository {
     const team = this.teamRepository.create({
       teamName: name,
       teamDescription: description,
-      teamLeader: user,
     });
+
+    team.user = user;
 
     if (!team) {
       throw new Error("Unable to create team"); //Change the throwen error here to more specific

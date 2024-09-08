@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards } from "@nestjs/common";
+import { Body, Controller, Patch, Post, UseGuards } from "@nestjs/common";
 import { TeamService } from "../usecases/team.service";
 import { CreateTeamDto } from "../usecases/dto/create-team.dto";
 import { AuthGuard } from "src/auth/Guards/auth.guard";
@@ -16,4 +16,15 @@ export class TeamController {
     const something = await this.teamService.createTeam(info, user);
     return something;
   }
+
+  @UseGuards(AuthGuard)
+  @Patch("/${teamId}/update")
+  async updateTeam() {}
+  //Update Teams details/properties  --> for Admins/creators of a team only
+  //Delete Teams --> for Admins/creators of a team only
+  // Assing users to team
+  // Get teams a user is in
+  //Assign teams to task / Assign task to team
+  //Get the tasks assigned to a team
+  //
 }
