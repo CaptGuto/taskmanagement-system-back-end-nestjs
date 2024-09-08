@@ -42,11 +42,10 @@ export class TeamController {
   async deleteTeam(@Param("teamId") teamId: number, @CurrentUser() user: User) {
     return await this.teamService.deleteTeam(teamId, user);
   }
-  //Delete Teams --> for Admins/creators of a team only
-  // Assing users to team
+  // Assing users to team  ==> create a relationship between user and team manytomany
   // Get teams a user is in
   //Assign teams to task / Assign task to team
   //Get the tasks assigned to a team
-  //Make a user an admin of a team
+  //Make a user an admin of a team ==> create a relationship between user and team manytomany
   //
 }

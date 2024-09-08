@@ -57,4 +57,7 @@ export class User {
   // A relation to team defining team leader user of a team
   @OneToMany(() => Team, (team) => team.createdBy)
   myTeams: Team[];
+
+  @ManyToMany(() => Team, (team) => team.members)
+  MemberTeams: Team[];
 }

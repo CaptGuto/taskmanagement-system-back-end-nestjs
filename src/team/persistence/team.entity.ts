@@ -55,6 +55,11 @@ export class Team {
   })
   admins: User[];
 
+  @ManyToMany(() => User, (user) => user.MemberTeams)
+  @JoinTable({
+    name: "team_members",
+  })
+  members: User[];
   // @Column({ name: "team_leader" })
   // teamLeader: number; //later to be changed to a relationship with user
 
