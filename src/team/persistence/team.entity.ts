@@ -4,6 +4,8 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -39,6 +41,12 @@ export class Team {
   @ManyToOne(() => User, (user) => user.myTeams)
   @JoinColumn({ name: "created_by" })
   user: User;
+
+  @ManyToMany(() => User)
+  @JoinTable({
+    name: "team_admins",
+  })
+  admins: User[];
 
   // @Column({ name: "team_leader" })
   // teamLeader: number; //later to be changed to a relationship with user

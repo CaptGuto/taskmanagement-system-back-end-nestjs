@@ -90,7 +90,7 @@ export class TaskRepository {
   async updateTask(taskId, info: Partial<CreateTaskDto>): Promise<Task> {
     const task = await this.getATaskWithId(taskId);
     if (!task) {
-      throw new NotFoundException(`User with id ${taskId} not found`);
+      throw new NotFoundException(`Task with id ${taskId} not found`);
     }
 
     Object.assign(task, info);
