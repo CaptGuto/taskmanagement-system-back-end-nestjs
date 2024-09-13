@@ -29,6 +29,7 @@ export class InvitationService {
       inviterUser.id,
       inivitationTeamId,
     );
+    // Todo: Encrypt the token before sotring it
 
     if (!invitedUser) {
       throw new NotFoundException(
