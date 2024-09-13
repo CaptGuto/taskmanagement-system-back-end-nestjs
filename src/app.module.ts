@@ -8,6 +8,7 @@ import { AuthModule } from "./auth/auth.module";
 import { UserModule } from "./user/user.module";
 import { TaskModule } from "./task/task.module";
 import { TeamModule } from "./team/team.module";
+import { NotificationModule } from "./notification/notification.module";
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { TeamModule } from "./team/team.module";
     UserModule,
     TaskModule,
     TeamModule,
+    NotificationModule,
   ],
   controllers: [AppController],
   providers: [AppService],

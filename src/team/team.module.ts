@@ -6,8 +6,9 @@ import { Team } from "./persistence/team.entity";
 import { TeamRepository } from "./persistence/team.repository";
 
 @Module({
+  exports: [TeamService, TeamRepository],
   imports: [TypeOrmModule.forFeature([Team])],
-  providers: [TeamService, TeamRepository],
+  providers: [TeamService, TeamRepository, TeamService],
   controllers: [TeamController],
 })
 export class TeamModule {}

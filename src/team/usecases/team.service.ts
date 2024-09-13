@@ -14,7 +14,7 @@ export class TeamService {
     return await this.teamRepoistory.create(teamName, teamDescription, user);
   }
 
-  async getTeamWithId(teamId: number, relations: string[]): Promise<Team> {
+  async getTeamWithId(teamId: number, relations: string[] = []): Promise<Team> {
     return await this.teamRepoistory.getATeamWithId(teamId, relations);
   }
 

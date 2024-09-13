@@ -43,14 +43,12 @@ export class Task {
   @Column({ type: "timestamptz" })
   due_date: Date;
 
-  @ApiProperty()
   @CreateDateColumn({
     type: "timestamptz",
     name: "created_at",
   })
   created_at: Date;
 
-  @ApiProperty()
   @UpdateDateColumn({
     type: "timestamptz",
     name: "updated_at",
