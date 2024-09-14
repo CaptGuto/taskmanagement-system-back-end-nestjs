@@ -38,4 +38,8 @@ export class InvitationRepository {
 
     return await this.invitationRepository.save(invitation);
   }
+
+  async getInvitationById(user: User): Promise<Invitation[]> {
+    return await this.invitationRepository.findBy({ invitedUserId: user.id });
+  }
 }

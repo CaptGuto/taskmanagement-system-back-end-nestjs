@@ -5,6 +5,7 @@ import { UserService } from "src/user/usecases/user.service";
 import { TeamService } from "src/team/usecases/team.service";
 import { User } from "src/user/persistence/user/user.entity";
 import { JwtService } from "@nestjs/jwt";
+import { Invitation } from "src/notification/persistence/invitation/invitation.entity";
 
 @Injectable()
 export class InvitationService {
@@ -67,5 +68,9 @@ export class InvitationService {
 
     const access_token = await this.jwtService.signAsync(tokenPyload);
     return access_token;
+  }
+
+  async getAllInvitation(user: User): Promise<Invitation[]> {
+    return this.invitationRepository.getInvitationById(user);
   }
 }

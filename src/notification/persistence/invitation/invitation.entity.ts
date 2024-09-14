@@ -1,10 +1,4 @@
-import {
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-  JoinColumn,
-  Entity,
-} from "typeorm";
+import { Column, ManyToOne, JoinColumn, Entity } from "typeorm";
 import { InvitationType } from "../../common/enums/invitation-type.enum";
 import { CommonEntity } from "src/Common/Entity/common.entity";
 import { User } from "src/user/persistence/user/user.entity";

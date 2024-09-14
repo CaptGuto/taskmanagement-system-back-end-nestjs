@@ -1,5 +1,14 @@
-import { Body, Controller, Injectable, Post, UseGuards } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Get,
+  Injectable,
+  Post,
+  UseGuards,
+} from "@nestjs/common";
+import { ApiOkResponse } from "@nestjs/swagger";
 import { AuthGuard } from "src/auth/Guards/auth.guard";
+import { Invitation } from "src/notification/persistence/invitation/invitation.entity";
 // import { AuthGuard } from "../../../auth/Guards/auth.guard";
 import { SendTeamInvitationDto } from "src/notification/usecase/invitation/dto/send-team-invitation.dto";
 import { InvitationService } from "src/notification/usecase/invitation/invitation.service";
@@ -21,7 +30,20 @@ export class InvitationController {
     return await this.invitationService.sendInvitation(info, user);
   }
 
+  // @UseGuards(AuthGuard)
+  // @Post("/accept-team-invitation")
+  // async acceptInvitation(info: ) {
+  //   return this.invitationService.acceptInvitation();
+  // }
+
   @UseGuards(AuthGuard)
-  @Post("/accept-team-invitation")
-  async acceptInvitation() {}
+  @ApiOkResponse({
+    type: [Invitation],
+  })
+  @Get("/get-all-invitation")
+  async getAllInvitation(
+    @CurrentUser() currentUser: User,
+  ): Promise<Invitation[]> {
+    return this.invitationService.getAllInvitation(currentUser);
+  }
 }
