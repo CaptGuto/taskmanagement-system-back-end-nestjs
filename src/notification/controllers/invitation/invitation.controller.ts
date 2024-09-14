@@ -21,6 +21,7 @@ export class InvitationController {
   constructor(private readonly invitationService: InvitationService) {}
 
   //A Guard to check if the user sending the invite is the admin/creator of the team or the project sending the invitation for
+  // Todo: Check if the invitation for that specific team is sent or that the user has already been invited to the team
   @UseGuards(AuthGuard)
   @Post("/send-team-invitation")
   async sendInvitation(
@@ -29,12 +30,6 @@ export class InvitationController {
   ) {
     return await this.invitationService.sendInvitation(info, user);
   }
-
-  // @UseGuards(AuthGuard)
-  // @Post("/accept-team-invitation")
-  // async acceptInvitation(info: ) {
-  //   return this.invitationService.acceptInvitation();
-  // }
 
   @UseGuards(AuthGuard)
   @ApiOkResponse({
@@ -46,4 +41,10 @@ export class InvitationController {
   ): Promise<Invitation[]> {
     return this.invitationService.getAllInvitation(currentUser);
   }
+
+  // @UseGuards(AuthGuard)
+  // @Post("/accept-team-invitation")
+  // async acceptInvitation(info: ) {
+  //   return this.invitationService.acceptInvitation();
+  // }
 }
