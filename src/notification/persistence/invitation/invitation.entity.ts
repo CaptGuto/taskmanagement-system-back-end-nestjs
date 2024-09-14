@@ -10,6 +10,7 @@ import { CommonEntity } from "src/Common/Entity/common.entity";
 import { User } from "src/user/persistence/user/user.entity";
 import { Team } from "src/team/persistence/team.entity";
 import { ApiProperty } from "@nestjs/swagger";
+import { InvitationStatus } from "src/notification/common/enums/invitation-status.enum";
 
 @Entity()
 export class Invitation extends CommonEntity {
@@ -35,6 +36,10 @@ export class Invitation extends CommonEntity {
   @ApiProperty()
   @Column({ name: "inviter_user_id" })
   inviterUserId: number;
+
+  @ApiProperty()
+  @Column({ name: "invitation_status" })
+  invitationStatus: InvitationStatus;
 
   @ApiProperty()
   @Column({ name: "inivitation_token" }) //Be sure to encrypt the token before storing it

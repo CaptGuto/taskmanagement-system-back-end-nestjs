@@ -3,7 +3,6 @@ import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
-  Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
@@ -11,7 +10,7 @@ import {
 export abstract class CommonEntity {
   @PrimaryGeneratedColumn()
   @ApiProperty()
-  task_id: number;
+  id: number;
 
   @CreateDateColumn({
     type: "timestamptz",

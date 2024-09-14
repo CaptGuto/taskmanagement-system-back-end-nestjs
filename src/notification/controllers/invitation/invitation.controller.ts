@@ -20,4 +20,8 @@ export class InvitationController {
   ) {
     return await this.invitationService.sendInvitation(info, user);
   }
+
+  @UseGuards(AuthGuard)
+  @Post("/accept-team-invitation")
+  async acceptInvitation() {}
 }

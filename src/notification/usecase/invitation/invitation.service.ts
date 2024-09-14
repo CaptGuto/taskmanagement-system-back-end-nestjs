@@ -44,7 +44,7 @@ export class InvitationService {
       throw new NotFoundException("This team does not exist");
     }
 
-    const invitation = this.invitationRepository.createInvitation(
+    return this.invitationRepository.createInvitation(
       invitationType,
       invitationMessage,
       inviterUser,
