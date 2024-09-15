@@ -3,7 +3,9 @@ import {
   Controller,
   Get,
   Injectable,
+  Param,
   Post,
+  Query,
   UseGuards,
 } from "@nestjs/common";
 import { ApiOkResponse } from "@nestjs/swagger";
@@ -42,9 +44,19 @@ export class InvitationController {
     return this.invitationService.getAllInvitation(currentUser);
   }
 
-  // @UseGuards(AuthGuard)
-  // @Post("/accept-team-invitation")
-  // async acceptInvitation(info: ) {
-  //   return this.invitationService.acceptInvitation();
-  // }
+  // Todo: Maybe a gurad to check if the user is the one who got the task or not : check the current user against the invitation's invited user
+  // Todo: clean up
+  @UseGuards(AuthGuard)
+  @Post(":id/accept-team-invitation")
+  async acceptInvitation(
+    @CurrentUser() user: User,
+    @Param("id") id: number,
+    @Query("token") token: string,
+  ) {
+    return this.invitationService.acceptInvitation(id, token, user);
+  }
 }
+
+/**
+ * the accepted invitaion id, the token from that invitation
+ */

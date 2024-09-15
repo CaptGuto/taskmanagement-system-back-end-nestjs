@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from "@nestjs/common";
 import { InvitationRepository } from "../../persistence/invitation/invitation.repository";
 import { SendTeamInvitationDto } from "./dto/send-team-invitation.dto";
 import { UserService } from "src/user/usecases/user.service";
@@ -71,6 +75,28 @@ export class InvitationService {
   }
 
   async getAllInvitation(user: User): Promise<Invitation[]> {
-    return this.invitationRepository.getInvitationById(user);
+    return this.invitationRepository.getInvitatinByUser(user);
+  }
+
+  async checkToken(token: string, currentUser: User): Promise<boolean> {
+    try {
+      const payload = await this.jwtService.verifyAsync(token, {
+        secret: process.env.JWT_SECREATE,
+      });
+
+      if (payload.invited === currentUser.email) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch {
+      throw new UnauthorizedException();
+    }
+  }
+
+  async acceptInvitation(invitationId: number, token: string, user: User) {
+    if (this.checkToken(token, user)) {
+      return this.invitationRepository.acceptInvitation(invitationId);
+    }
   }
 }

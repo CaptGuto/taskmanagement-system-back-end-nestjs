@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Invitation } from "./invitation.entity";
 import { Repository } from "typeorm";
@@ -39,7 +39,21 @@ export class InvitationRepository {
     return await this.invitationRepository.save(invitation);
   }
 
-  async getInvitationById(user: User): Promise<Invitation[]> {
+  async getInvitatinByUser(user: User): Promise<Invitation[]> {
     return await this.invitationRepository.findBy({ invitedUserId: user.id });
+  }
+
+  async getInvitationById(id: number): Promise<Invitation> {
+    return await this.invitationRepository.findOneBy({ id: id });
+  }
+
+  async acceptInvitation(invitationId: number) {
+    const invitation = await this.getInvitationById(invitationId);
+    if (!invitation) {
+      throw new NotFoundException("Invitation not found");
+    }
+
+    invitation.invitationStatus = InvitationStatus.ACCEPTED;
+    return await this.invitationRepository.save(invitation);
   }
 }
