@@ -114,7 +114,7 @@ export class InvitationService {
         teamId,
         invitedUserId,
       );
-    const exists = !!invitation;
-    return exists;
+
+    return !!invitation;
   }
 }
