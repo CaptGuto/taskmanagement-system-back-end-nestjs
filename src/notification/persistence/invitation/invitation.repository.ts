@@ -56,4 +56,12 @@ export class InvitationRepository {
     invitation.invitationStatus = InvitationStatus.ACCEPTED;
     return await this.invitationRepository.save(invitation);
   }
+  async getInvitationByTeamIdandInvitedUserId(
+    teamId: number,
+    invitedUserId: number,
+  ): Promise<Invitation> {
+    return await this.invitationRepository.findOne({
+      where: { invitationTeamId: teamId, invitedUserId },
+    });
+  }
 }

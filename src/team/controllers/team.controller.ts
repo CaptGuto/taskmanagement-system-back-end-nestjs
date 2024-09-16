@@ -15,8 +15,10 @@ import { User } from "src/user/persistence/user/user.entity";
 import { CheckTeamAdminGuard } from "../guards/check-team-admin.guard";
 import { UpdateTeamDto } from "../usecases/dto/update-team.dto";
 import { CheckTeamCreatorGuard } from "../guards/check-team-creator.guard";
+import { ApiTags } from "@nestjs/swagger";
 
 @Controller("team")
+@ApiTags("team")
 export class TeamController {
   constructor(private readonly teamService: TeamService) {}
 

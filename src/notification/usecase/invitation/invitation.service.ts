@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -47,6 +48,10 @@ export class InvitationService {
 
     if (!invitationTeam) {
       throw new NotFoundException("This team does not exist");
+    }
+
+    if (await this.invitationExists(inivitationTeamId, invitedUser.id)) {
+      return new BadRequestException("Invitation already sent");
     }
 
     return this.invitationRepository.createInvitation(
@@ -98,5 +103,18 @@ export class InvitationService {
     if (this.checkToken(token, user)) {
       return this.invitationRepository.acceptInvitation(invitationId);
     }
+  }
+
+  async invitationExists(
+    teamId: number,
+    invitedUserId: number,
+  ): Promise<Boolean> {
+    const invitation =
+      await this.invitationRepository.getInvitationByTeamIdandInvitedUserId(
+        teamId,
+        invitedUserId,
+      );
+    const exists = !!invitation;
+    return exists;
   }
 }

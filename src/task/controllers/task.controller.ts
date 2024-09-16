@@ -23,12 +23,14 @@ import {
   ApiCreatedResponse,
   ApiOkResponse,
   ApiQuery,
+  ApiTags,
 } from "@nestjs/swagger";
 import { UpdateTaskDto } from "../usecase/dto/update-task.dto";
 import { CreateTaskResponseDto } from "../usecase/dto/create-task-response.dto";
 import { SerializeResponse } from "src/interceptor/serialize.interceptor";
 import { AssignUserToTaskResponseDto } from "../usecase/dto/assign-user-to-task-response.dto";
 
+@ApiTags("Task")
 @Controller("task")
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}

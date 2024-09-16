@@ -8,7 +8,7 @@ import {
   Query,
   UseGuards,
 } from "@nestjs/common";
-import { ApiOkResponse } from "@nestjs/swagger";
+import { ApiOkResponse, ApiTags } from "@nestjs/swagger";
 import { AuthGuard } from "src/auth/Guards/auth.guard";
 import { Invitation } from "src/notification/persistence/invitation/invitation.entity";
 // import { AuthGuard } from "../../../auth/Guards/auth.guard";
@@ -19,6 +19,7 @@ import { CurrentUser } from "src/user/utility/decorators/current-user.decorator"
 
 @Injectable()
 @Controller("invitation")
+@ApiTags("Invitation")
 export class InvitationController {
   constructor(private readonly invitationService: InvitationService) {}
 
@@ -46,6 +47,7 @@ export class InvitationController {
 
   // Todo: Maybe a gurad to check if the user is the one who got the task or not : check the current user against the invitation's invited user
   // Todo: clean up
+  // Todo; If the invitation status is accepted do not allow any action
   @UseGuards(AuthGuard)
   @Post(":id/accept-team-invitation")
   async acceptInvitation(
@@ -56,7 +58,3 @@ export class InvitationController {
     return this.invitationService.acceptInvitation(id, token, user);
   }
 }
-
-/**
- * the accepted invitaion id, the token from that invitation
- */

@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Get,
@@ -21,8 +20,9 @@ import { User } from "../persistence/user/user.entity";
 import { CurrentUserInterceptor } from "../utility/interceptors/current-user.interceptor";
 import { UserResponeseDto } from "../usecases/dto/user-response.dto";
 import { UpdateUserProfileDto } from "../usecases/dto/update-user-profile.dto";
-import { ApiCreatedResponse, ApiOkResponse } from "@nestjs/swagger";
+import { ApiCreatedResponse, ApiOkResponse, ApiTags } from "@nestjs/swagger";
 @Controller("user")
+@ApiTags("user")
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
